@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
+    <style>
+		html, body, .map {
+			height: 100%;
+			width: 100%;
+			padding: 0;
+			margin: 0;
+		}
+		#panel {
+			position: absolute;
+			top: 10px;
+			left: 50px;
+		}
+		.btn-map {
+			height: 40px;
+			background: #7b98bc;
+			color: white;
+			border: 2px solid white;
+			border-radius: 4px;
+			font-size: 14px;
+			opacity: 0.9;
+			font-weight: bold;
+		}
+    </style>
+    <script src="https://openlayers.org/en/v4.6.5/build/ol.js" type="text/javascript"></script>
+    <title>My first application</title>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <div id="panel">
+        <button id="showWms" class="btn-map">Show wms</button>
+        <button id="hideWms" class="btn-map">Hide wms</button>
+        <button id="showCountry" class="btn-map">Thailand</button>
+    </div>
+    <script type="text/javascript">
+      var wmsLayerProvince;
+      var map = new ol.Map({
+        target: 'map',
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        view: new ol.View({
+          center: ol.proj.fromLonLat([100, 13]),
+          zoom: 6
+        })
+      });
+	  
+        var btnShowWms = document.getElementById('showWms');
+        var btnHideWms = document.getElementById('hideWms');
+        var showCountry = document.getElementById('showCountry');
+
+        btnShowWms.onclick =  function() {
+            removeExistingWms();
+            var wmsSourceProvince = new ol.source.ImageWMS({
+                url: 'http://ebgmap.ns1bb.net/geoserver/EBGv2/wms?',
+                params: {
+                    'LAYERS': 'EBGv2:WellDensity'
+                },
+                crossOrigin: 'anonymous'
+            });
+
+            wmsLayerProvince = new ol.layer.Image({source: wmsSourceProvince});
+            map.addLayer(wmsLayerProvince);
+
+            map.getView().fit(ol.proj.transformExtent([98.464198, 8.182077, 98.250123, 7.723311], 'EPSG:4326', 'EPSG:3857'));
+        }
+
+        btnHideWms.onclick =  function() {
+            removeExistingWms();
+        }
+
+        showCountry.onclick =  function() {
+            map.setView(
+                new ol.View({
+                    center: ol.proj.fromLonLat([100.4833, 13.7500]),
+                    zoom: 6
+                })
+            );
+        }
+
+        function removeExistingWms() {
+            if (typeof wmsLayerProvince === 'object') {
+                map.removeLayer(wmsLayerProvince);
+            }
+        }
+    </script>
+  </body>
+</html>

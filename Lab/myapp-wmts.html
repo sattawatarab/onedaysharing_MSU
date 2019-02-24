@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WMTS</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <script>
+var projection = ol.proj.get('EPSG:4326');
+      var projectionExtent = projection.getExtent();
+      var mapExtent =  [98.500000,5.500000,105.500000,19.500000];
+      var matrixIds = new Array(22);
+
+      for (var z = 0; z < 22; ++z) {
+        matrixIds[z] = "EPSG:4326:" + z;;
+      }
+      resolutions = [
+            0.703125, 0.3515625, 0.17578125, 0.087890625,
+            0.0439453125, 0.02197265625, 0.010986328125,
+            0.0054931640625, 0.00274658203125, 0.001373291015625,
+            6.866455078125E-4, 3.4332275390625E-4, 1.71661376953125E-4,
+            8.58306884765625E-5, 4.291534423828125E-5, 2.1457672119140625E-5,
+              1.0728836059570312E-5, 5.364418029785156E-6, 2.682209014892578E-6,
+            1.341104507446289E-6, 6.705522537231445E-7, 3.3527612686157227E-7
+      ];
+
+      var map = new ol.Map({
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM(),
+            opacity: 0.7
+          }),
+  new ol.layer.Tile({
+            opacity: 0.7,
+            source: new ol.source.WMTS({
+                url: 'https://floodtiles.gistda.or.th/gwc/service/wmts?',
+                layer: 'FloodOnline:201710Flood',
+              matrixSet: 'EPSG:4326',
+              format: 'image/png',
+              projection: projection,
+              tileGrid: new ol.tilegrid.WMTS({
+                origin: ol.extent.getTopLeft(projectionExtent),
+                resolutions: resolutions,
+                matrixIds: matrixIds
+              }),
+              style: '',
+              wrapX: true
+            })
+          }),
+		  new ol.layer.Tile({
+            opacity: 0.9,
+            source: new ol.source.WMTS({
+                url: 'http://localhost:8082/geoserver/gwc/service/wmts?',
+                layer: 'sattwat:SubDistrict',
+              matrixSet: 'EPSG:4326',
+              format: 'image/png',
+              projection: projection,
+              tileGrid: new ol.tilegrid.WMTS({
+                origin: ol.extent.getTopLeft(projectionExtent),
+                resolutions: resolutions,
+                matrixIds: matrixIds
+              }),
+              style: '',
+              wrapX: true
+            })
+          })
+        ],
+        target: 'map',
+        controls: ol.control.defaults({
+          attributionOptions: {
+            collapsible: false
+          }
+        }),
+        view: new ol.View({
+          center: ol.proj.fromLonLat([100, 13]),
+          zoom: 4
+        })
+      });
+    </script>
+  </body>
+</html>

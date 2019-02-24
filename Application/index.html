@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>One day shaing - Open Layer Workshop</title>
+	<meta charset="UTF-8">
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+	<script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
+</head>
+<body>
+    <div id="fullscreen" class="fullscreen">
+        <div class="sidepanel">
+            <span class="sidepanel-title">Map overlay</span>
+            <div class="form">
+                <label class="switch pull-left">
+                    <input type="checkbox" name="ne" value="wmsLayerAdmin" class="checkbox" onchange="showMapLayer(this);" id="wms1">
+                    <span class="slider round"></span>
+                </label>
+                <span class="layer-name">Administrative boundary</span>
+                <div>&nbsp;</div>
+
+				<label class="switch pull-left">
+                    <input type="checkbox" name="amphoe" value="wmsLayerAmphoe" class="checkbox" onchange="showMapLayer(this);">
+                    <span class="slider round"></span>
+                </label>
+                <span class="layer-name">Amphoe</span>
+				<div>&nbsp;</div>
+
+                <label class="switch pull-left">
+                    <input type="checkbox" name="tambaon" value="wmsLayerProvince" class="checkbox" onchange="showMapLayer(this);">
+                    <span class="slider round"></span>
+                </label>
+                <span class="layer-name">Province</span>
+                <div>&nbsp;</div>
+
+
+                <!-- <label class="switch pull-left">
+                    <input type="checkbox" name="dam" value="wmsLayerDam" class="checkbox" onchange="showMapLayer(this);">
+                    <span class="slider round"></span>
+                </label>
+                <span class="layer-name">Dam</span>
+				 <div id="info">&nbsp;</div> <br> -->
+				 <!-- Trigger/Open The Modal -->
+				<a id="myBtn"><img src="im/icon-2.png" width="50" height="40"></a>
+
+				<!-- The Modal -->
+				<div id="myModal" class="modal">
+
+				<!-- Modal content -->
+				<div class="modal-content">
+				<span class="close">&times;</span>
+				<table style="width:100%">
+				  <tr>
+                    <td><font color="black">Amphoe</font><br>
+  					<img src="http://35.187.226.77:8080/geoserver/i-bitz/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=i-bitz:Amphoe"></p></td><br>
+					<td><font color="black">Province</font><br>
+					<img src="http://35.187.226.77:8080/geoserver/i-bitz/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=i-bitz:Province"></p></td><br>
+				  </tr>
+				</table>
+				</div>
+				</div>
+				<a id="export-png" class="btn btn-default"><i class="fa fa-download"></i><img src="im/icon-1.png" width="50" height="40"></a>
+
+				<form class="form-inline">
+      <label>Measurement type &nbsp;</label>
+      <select id="type">
+        <option value="length">Length (LineString)</option>
+        <option value="area">Area (Polygon)</option>
+      </select>
+    </form>
+            </div>
+        </div>
+        <div id="map" class="map"></div>
+		<div id="popup" class="ol-popup">
+		  <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+		  <div id="popup-content"></div>
+		</div>
+
+		</div>
+
+    <script type="text/javascript" src="map.js"></script>
+</body>
+</html>
