@@ -57,9 +57,9 @@
         btnShowWms.onclick =  function() {
             removeExistingWms();
             var wmsSourceProvince = new ol.source.ImageWMS({
-                url: 'http://ebgmap.ns1bb.net/geoserver/EBGv2/wms?',
+                url: 'https://floodtiles.gistda.or.th/geoserver/FloodOnline/wms?',
                 params: {
-                    'LAYERS': 'EBGv2:WellDensity'
+                    'LAYERS': 'FloodOnline:RepeatFloodRaster'
                 },
                 crossOrigin: 'anonymous'
             });
